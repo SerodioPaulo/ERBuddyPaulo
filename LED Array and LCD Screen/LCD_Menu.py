@@ -17,6 +17,7 @@ menuData =  [[['ERBuddy Main Menu']],\
             [['Back']]]
 
 volume = 0
+level = 0
             
 def getMenuItem(L,i):
     if L == 0: return menuData[i][0][0]
@@ -30,47 +31,42 @@ def printMenu():
         if menuState[level] == i: sys.stdout.write('#')
         print(getMenuItem(level, i))
         i += 1
-
-level = 0
         
 def getLevel():
     if menuState[2] != 0: level = 2 
     elif menuState[1] != 0: level = 1
     elif menuState[0] != 0: level = 0
     else: level = -1
-        
+
+def arrowButton():
+    getLevel()
+    if getMenuItem(2, menuState[2]) == 'Back': menuState[level] = 1
+    else: menuState[level] += 1
+    printMenu()
+
+def enterButton():
+    getLevel()
+    if getMenuItem(2, menuState[2]) == 'Back': menuState[level] = 0 ; level -= 1 #Exit a submenu
+    #Put all the functions here
+    #elif menuState == [4,1,1]: #set color white
+    #elif menuState == [4,1,2]: #set color cyan
+    #elif menuState == [4,1,3]: #set color yellow
+    #elif menuState == [4,1,4]: #set color orange
+    #elif menuState == [4,1,5]: #set color purple
+    #elif menuState == [4,1,6]: #set color blue
+    elif menuState == [4,2,1] and volume < 100: volume += 10 ; menuData[4][2][0] = 'Volume:   ' + str(volume) #example changing volume
+    elif menuState == [4,2,2] and volume > 0: volume -= 10 ; menuData[4][2][0] = 'Volume:   ' + str(volume) 
+    else: level += 1 ; menuState[level] = 1 #Enter a submenu
+    if menuState == [0,0,0]: os.system('cls') ; print('Idling...')
+    else: printMenu()
+    
 while True:
 
     ask = input()
     
-    if ask == 'q' and menuState != [0,0,0]:
-        getLevel()
-        if getMenuItem(2, menuState[2]) == 'Back': menuState[level] = 1
-        else: menuState[level] += 1
-        printMenu()
+    if ask == 'q' and menuState != [0,0,0]:arrowButton()
         
-    if ask == 'w':
-        getLevel()
-        if getMenuItem(2, menuState[2]) == 'Back': menuState[level] = 0 ; level -= 1 #Exit a submenu
-        #Put all the functions here
-        #elif menuState == [4,1,1]: #set color white
-        #elif menuState == [4,1,2]: #set color cyan
-        #elif menuState == [4,1,3]: #set color yellow
-        #elif menuState == [4,1,4]: #set color orange
-        #elif menuState == [4,1,5]: #set color purple
-        #elif menuState == [4,1,6]: #set color blue
-        elif menuState == [4,2,1]: volume += 10 ; menuData[4][2][0] = 'Volume:   ' + str(volume) #example changing volume
-        elif menuState == [4,2,2]: volume -= 10 ; menuData[4][2][0] = 'Volume:   ' + str(volume) 
-        else: level += 1 ; menuState[level] = 1 #Enter a submenu
-        if menuState == [0,0,0]: os.system('cls') ; print('Idling...')
-        else: printMenu()
-        
-    
-
-
-
-
-
+    if ask == 'w': enterButton()
 
 #glcd.draw_string('abcdefghijklmnopqrstu', neato, 0, 24,spacing=1,invert=1)
 #glcd.flip()
