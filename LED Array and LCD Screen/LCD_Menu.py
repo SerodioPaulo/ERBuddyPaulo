@@ -33,19 +33,22 @@ def printMenu():
         i += 1
         
 def getLevel():
-    if menuState[2] != 0: level = 2 
-    elif menuState[1] != 0: level = 1
-    elif menuState[0] != 0: level = 0
-    else: level = -1
+    if menuState[2] != 0: return 2 
+    elif menuState[1] != 0: return 1
+    elif menuState[0] != 0: return 0
+    else: return -1
 
 def arrowButton():
-    getLevel()
+    global level
+    level = getLevel()
     if getMenuItem(2, menuState[2]) == 'Back': menuState[level] = 1
     else: menuState[level] += 1
     printMenu()
 
 def enterButton():
-    getLevel()
+    global level
+    global volume
+    level = getLevel()
     if getMenuItem(2, menuState[2]) == 'Back': menuState[level] = 0 ; level -= 1 #Exit a submenu
     #Put all the functions here
     #elif menuState == [4,1,1]: #set color white
@@ -55,7 +58,7 @@ def enterButton():
     #elif menuState == [4,1,5]: #set color purple
     #elif menuState == [4,1,6]: #set color blue
     elif menuState == [4,2,1] and volume < 100: volume += 10 ; menuData[4][2][0] = 'Volume:   ' + str(volume) #example changing volume
-    elif menuState == [4,2,2] and volume > 0: volume -= 10 ; menuData[4][2][0] = 'Volume:   ' + str(volume) 
+    elif menuState == [4,2,2] and volume > 0: volume -= 10 ; menuData[4][2][0] = 'Volume:   ' + str(volume)
     else: level += 1 ; menuState[level] = 1 #Enter a submenu
     if menuState == [0,0,0]: os.system('cls') ; print('Idling...')
     else: printMenu()
